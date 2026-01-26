@@ -28,7 +28,7 @@
     <section>
         <h2>Text entry, voice dictation, IME (eg: Pinyin), OSK and Drag and Drop</h2>
         <p>Try any of the input methods shown above.</p>
-        <div class="draggable" draggable="true" id="dragSource">DRAG THIS TEXT</div>
+        <p>Expectation: Input fields should act as read only if policy is active.</p>
         <div class="grid">
             <div class="test-case">
                 <label>Target Input:</label>
@@ -56,11 +56,19 @@
                 <label>Shadow DOM Input:</label>
                 <div id="shadowHost"></div>
             </div>
+            <div class="test-case">
+                Drag and drop this: <img src="https://www.netskope.com/wp-content/uploads/2024/08/netskope-logo-520x293-on-blue.png" width="100" draggable="true" alt="External Image">
+            </div>
+            <div id="contenteditableparent" class="test-case">
+                <label>Dynamically created contenteditable div.</label>
+                <button onclick="creatediv()">Create contenteditable div</button>
+            </div>
         </div>
     </section>
 
     <section>
         <h2>Autofill (Address/Credit Card)</h2>
+        <p>Expectation: Autofill UI shouldn't pop up if policy is active.</p>
         <form action="/nowhere" method="post">
             <div class="grid">
                 <div class="test-case">
@@ -76,18 +84,8 @@
     </section>
 
     <section>
-        <h2>JS DOM mutations (Should always be allowed for webcompat reasons)</h2>
-        <div class="grid">
-            <div class="test-case">
-                <label>Direct .value Injection:</label>
-                <button onclick="injectText()">Run JS Injection</button>
-                <input type="text" id="jsTarget" value="Original Value">
-            </div>
-        </div>
-    </section>
-
-    <section>
         <h2>Programmatic focus</h2>
+        <p>Expectation: Focus should be allowed. Users should be allowed to move cursor as normal.</p>
         <div class="control-group">
             <button onclick="focusElement('inputField')">Focus Input</button>
             <button onclick="focusElement('textArea')">Focus Textarea</button>
@@ -98,7 +96,7 @@
         <input type="text" id="inputField" value="Focus me programmatically">
 
         <label style="display:block; margin-top:15px;">Textarea:</label>
-        <textarea id="textArea">Can you see the blinking caret after clicking focus?</textarea>
+        <textarea id="textArea">Focus me programmatically</textarea>
 
         <label style="display:block; margin-top:15px;">ContentEditable Div:</label>
         <div id="editableDiv" contenteditable="true" style="border: 1px solid">This is a contenteditable div.</div>
@@ -106,7 +104,7 @@
 
     <section>
         <h2>Frame Isolation (In-Proc & OOPIF)</h2>
-        <p>Checks if settings propagate to child frames.</p>
+        <p>Expectation: No input allowed if policy is active.</p>
         <div class="grid">
             <div class="test-case">
                 <label>Same-Origin Iframe (In-Proc):</label>
@@ -120,20 +118,38 @@
     </section>
 
     <section>
-        <h2>Canvas and Dynamic CE</h2>
+        <h2>Out of scope</h2>
         <div class="grid">
             <div class="test-case">
                 <label>Canvas Text (Synthetic):</label>
                 <canvas id="fakeInput" width="300" height="50" style="border:1px solid red; background:#fff;"></canvas>
-                <p style="font-size:0.7em">Click and type. Renderer hooks will be bypassed since this is not a regular "Form" element.</p>
-            </div>
-
-            <div id="contenteditableparent" class="test-case">
-                <label>Click here to create a contenteditable div dynamically:</label>
-                <button onclick="creatediv()">Create</button>
             </div>
         </div>
+        <div class="grid">
+            <div class="test-case">
+                <label>Direct value Injection:</label>
+                <button onclick="injectText()">Run JS Injection</button>
+                <input type="text" id="jsTarget" value="Original Value">
+            </div>
+        </div>
+        <div class="field"><label>Date:</label><input type="date"></div><br />
+        <div class="field"><label>Color Picker:</label><input type="color"></div><br />
+        <div class="field"><label>Range/Slider:</label><input type="range" min="0" max="100"></div><br />
+        <div class="field"><label>File Upload:</label><input type="file"></div><br />
+        <div class="field"><label>Checkboxes:</label><span><input type="checkbox"> Select this.</span></div><br />
+        <div class="field"><label>Choose one:</label>
+            <label><input type="radio" name="security-level" value="yes">Yes</label>
+            <label><input type="radio" name="security-level" value="no">No</label>
+        </div>
+        <div class="field" style="margin-top: 15px;"><label>Select one:</label>
+            <select name="options">
+                <option value="1">Option One</option>
+                <option value="2">Option Two</option>
+                <option value="3">Option Three</option>
+            </select>
+        </div>
     </section>
+
     <script>
         function focusElement(id) {
             const el = document.getElementById(id);
@@ -152,11 +168,6 @@
         const shadow = host.attachShadow({mode: 'open'});
         shadow.innerHTML = `<input type="text" value="I'm in a Shadow DOM">`;
 
-        const dragSource = document.getElementById('dragSource');
-        dragSource.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', "DRAGGED DATA");
-        });
-
         // Canvas Logic
         const cvs = document.getElementById('fakeInput');
         const ctx = cvs.getContext('2d');
@@ -172,6 +183,7 @@
             const newdiv = document.createElement("div");
             newdiv.contentEditable = "true";
             newdiv.style.border = "1px solid black";
+            newdiv.innerHTML="Try to edit me";
             document.getElementById('contenteditableparent').appendChild(newdiv);
         }
     </script>

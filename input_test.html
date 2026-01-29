@@ -27,7 +27,6 @@
 
     <section>
         <h2>Text entry, voice dictation, IME (eg: Pinyin), OSK and Drag and Drop</h2>
-        <p>Try any of the input methods shown above.</p>
         <p>Expectation: Input fields should act as read only if policy is active.</p>
         <div class="grid">
             <div class="test-case">
@@ -62,6 +61,10 @@
             <div id="contenteditableparent" class="test-case">
                 <label>Dynamically created contenteditable div.</label>
                 <button onclick="creatediv()">Create contenteditable div</button>
+            </div>
+            <div class="test-case">
+                <label>Canvas Support: Limited (only text suppression)</label>
+                <canvas id="fakeInput" width="300" height="50" style="border:1px solid red; background:#fff;"></canvas>
             </div>
         </div>
     </section>
@@ -121,12 +124,6 @@
         <h2>Out of scope</h2>
         <div class="grid">
             <div class="test-case">
-                <label>Canvas Text (Synthetic):</label>
-                <canvas id="fakeInput" width="300" height="50" style="border:1px solid red; background:#fff;"></canvas>
-            </div>
-        </div>
-        <div class="grid">
-            <div class="test-case">
                 <label>Direct value Injection:</label>
                 <button onclick="injectText()">Run JS Injection</button>
                 <input type="text" id="jsTarget" value="Original Value">
@@ -171,7 +168,8 @@
         // Canvas Logic
         const cvs = document.getElementById('fakeInput');
         const ctx = cvs.getContext('2d');
-        let cvsVal = "Canvas: ";
+        let cvsVal = "> ";
+        ctx.fillText(cvsVal, 10, 30);
         cvs.tabIndex = 0; // Make it focusable
         cvs.addEventListener('keydown', e => {
             if(e.key.length === 1) cvsVal += e.key;

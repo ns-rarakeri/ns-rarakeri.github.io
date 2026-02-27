@@ -11,7 +11,7 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .test-case { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: #555; }
-        input[type="text"], input[type="number"], input[type="date"], textarea, .editable-div { 
+        textarea, .editable-div {
             width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; 
         }
         .editable-div { min-height: 40px; border: 2px dashed #4CAF50; background: #fff; }
@@ -30,16 +30,36 @@
         <p>Expectation: Input fields should act as read only if policy is active.</p>
         <div class="grid">
             <div class="test-case">
-                <label>Target Input:</label>
-                <input type="text" value="Try selecting or copy/paste">
+                <label>Input Fields (try selection/copy/paste):</label>
+                <input type="text" value="type=text">
+                <input type="email" value="type=email">
+                <input type="hidden" value="type=hidden">
+                <input type="password" value="type=password">
+                <input type="search" value="type=search">
+                <input type="tel" value="type=tel">
+                <input type="url" value="type=url">
             </div>
             <div class="test-case">
-                <label>Target Textarea:</label>
-                <textarea placeholder="Drop here..."></textarea>
+                <label>Textarea:</label>
+                <textarea placeholder="Try text entry or Drag/Drop here"></textarea>
             </div>
             <div>
                 <label style="display:block; margin-top:15px;">ContentEditable Div:</label>
                 <div contenteditable="true" style="border: 1px solid">This is a contenteditable div.</div>
+            </div>
+            <div id="contenteditableparent" class="test-case">
+                <label>Dynamically created contenteditable div.</label>
+                <button onclick="creatediv()">Create contenteditable div</button>
+            </div>
+            <div>
+                <label style="display:block; margin-top:15px;">Nested ContentEditable:</label>
+                <div contenteditable="true" style="border: 1px solid; height: 100px; width: 550px">
+                    Root element has contenteditable. Text entry should be suppressed.
+                    <div style="border: 1px solid; height: 50px; width: 500px; margin: 10px">
+                        This is a nested div without the contenteditable attribute but since the parent has it,
+                        this div will inherit it. Text entry should be suppressed.
+                    </div>
+                </div>
             </div>
             <div class="test-case">
                 <label>SVG ForeignObject:</label>
@@ -57,10 +77,6 @@
             </div>
             <div class="test-case">
                 Drag and drop this: <img src="https://www.netskope.com/wp-content/uploads/2024/08/netskope-logo-520x293-on-blue.png" width="100" draggable="true" alt="External Image">
-            </div>
-            <div id="contenteditableparent" class="test-case">
-                <label>Dynamically created contenteditable div.</label>
-                <button onclick="creatediv()">Create contenteditable div</button>
             </div>
             <div class="test-case">
                 <label>Canvas Support: Limited (only text suppression)</label>
@@ -94,7 +110,7 @@
             <button onclick="focusElement('textArea')">Focus Textarea</button>
             <button onclick="focusElement('editableDiv')">Focus Div</button>
             <button onclick="selectAllText()">Select All (Global)</button>
-        </div>
+        </div><br />
         <label>Standard Input:</label>
         <input type="text" id="inputField" value="Focus me programmatically">
 
@@ -138,13 +154,20 @@
             <label><input type="radio" name="security-level" value="yes">Yes</label>
             <label><input type="radio" name="security-level" value="no">No</label>
         </div>
-        <div class="field" style="margin-top: 15px;"><label>Select one:</label>
+        <div class="field" style="margin-top: 15px;"><label>Dropdown:</label>
             <select name="options">
                 <option value="1">Option One</option>
                 <option value="2">Option Two</option>
                 <option value="3">Option Three</option>
             </select>
-        </div>
+        </div><br />
+        <div class="field"><label>Time:</label><input type="time"></div><br />
+        <div class="field"><label>Number (clicking on arrows to increment/decrement
+            is not in scope):</label><input type="number"></div><br />
+        <div class="field"><label>DateTime:</label><input type="datetime-local"></div><br />
+        <div class="field"><label>Week:</label><input type="week"></div><br />
+        <div class="field"><label>Month:</label><input type="month"></div><br />
+        <div class="field"><label>Image:</label><input type="image"></div><br />
     </section>
 
     <script>

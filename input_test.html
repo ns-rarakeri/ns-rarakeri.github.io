@@ -31,13 +31,13 @@
         <div class="grid">
             <div class="test-case">
                 <label>Input Fields (try selection/copy/paste):</label>
-                <input type="text" value="type=text">
-                <input type="email" value="type=email">
-                <input type="hidden" value="type=hidden">
-                <input type="password" value="type=password">
-                <input type="search" value="type=search">
-                <input type="tel" value="type=tel">
-                <input type="url" value="type=url">
+                <input type="text" value="text field">
+                <input type="email" value="email field">
+                <input type="hidden" value="hidden field">
+                <input type="password" value="password field">
+                <input type="search" value="search field">
+                <input type="tel" value="tel field">
+                <input type="url" value="url field">
             </div>
             <div class="test-case">
                 <label>Textarea:</label>
@@ -53,9 +53,9 @@
             </div>
             <div>
                 <label style="display:block; margin-top:15px;">Nested ContentEditable:</label>
-                <div contenteditable="true" style="border: 1px solid; height: 100px; width: 550px">
+                <div contenteditable="true" style="border: 1px solid; height: 100px; width: 600px">
                     Root element has contenteditable. Text entry should be suppressed.
-                    <div style="border: 1px solid; height: 50px; width: 500px; margin: 10px">
+                    <div style="border: 1px solid; height: 50px; width: 550px; margin: 10px">
                         This is a nested div without the contenteditable attribute but since the parent has it,
                         this div will inherit it. Text entry should be suppressed.
                     </div>
@@ -109,7 +109,7 @@
             <button onclick="focusElement('inputField')">Focus Input</button>
             <button onclick="focusElement('textArea')">Focus Textarea</button>
             <button onclick="focusElement('editableDiv')">Focus Div</button>
-            <button onclick="selectAllText()">Select All (Global)</button>
+            <button onclick="selectAllText()">Select all on focused element</button>
         </div><br />
         <label>Standard Input:</label>
         <input type="text" id="inputField" value="Focus me programmatically">
